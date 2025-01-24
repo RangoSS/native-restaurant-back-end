@@ -18,8 +18,8 @@ curl -X POST http://localhost:3003/api/user \
 curl -X POST http://localhost:3003/api/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "rango@gmail.com",
-    "password": "rango123"
+   "email": "gumbu@gmail.com",  
+    "password": "gumbu123"
   }'
 
 curl -X POST http://localhost:3003/api/restaurants \
@@ -53,3 +53,6 @@ curl -X PUT http://localhost:3003/api/restaurants/67935e235d56b86ef945b71c \
   -F "image=@C:/Users/tshid/Pictures/restaurant/mountainretreat.jpg"
 
   ////
+  
+  curl -X DELETE http://localhost:3003/api/restaurants/67936a6bbd66cee72d3ffbd3 \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTBiYzcxZWE4MTZmZWNiYjM1M2MzNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczNzcxNzg4OSwiZXhwIjoxNzM3NzIxNDg5fQ.1LJmQm8RUXQ1Bb2CF2HIPAzbjCXweyU_12MgegwuLRU"

@@ -18,8 +18,8 @@ curl -X POST http://localhost:3003/api/user \
 curl -X POST http://localhost:3003/api/login \
   -H "Content-Type: application/json" \
   -d '{
-   "email": "gumbu@gmail.com",  
-    "password": "gumbu123"
+   "email": "mike@gmail.com", 
+    "password": "mike123"
   }'
 
 curl -X POST http://localhost:3003/api/restaurants \

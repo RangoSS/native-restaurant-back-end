@@ -53,3 +53,74 @@ export const addRestaurant = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Update Restaurant function
+export const updateRestaurant = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+    const { name, description, address, contact, email, service, type, priceOfBooking, numberOfDaysBooked, numberOfPeopleBooked } = req.body;
+
+    // Find the restaurant by ID
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    // Check if the restaurant exists
+    if (!restaurant) {
+      return res.status(404).json({ error: 'Restaurant not found' });
+    }
+
+    // Check if the logged-in user is the owner of the restaurant
+    if (restaurant.userID.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'You are not authorized to update this restaurant' });
+    }
+
+    // Update restaurant data
+    restaurant.name = name || restaurant.name;
+    restaurant.description = description || restaurant.description;
+    restaurant.address = address || restaurant.address;
+    restaurant.contact = contact || restaurant.contact;
+    restaurant.email = email || restaurant.email;
+    restaurant.service = service || restaurant.service;
+    restaurant.type = type || restaurant.type;
+    restaurant.priceOfBooking = priceOfBooking || restaurant.priceOfBooking;
+    restaurant.numberOfDaysBooked = numberOfDaysBooked || restaurant.numberOfDaysBooked;
+    restaurant.numberOfPeopleBooked = numberOfPeopleBooked || restaurant.numberOfPeopleBooked;
+
+    // If there's an updated image, upload it to Firebase
+    if (req.file) {
+      const imageUrl = await uploadImageToFirebase(req.file);
+      restaurant.image = imageUrl;
+    }
+
+    // Save the updated restaurant
+    const updatedRestaurant = await restaurant.save();
+    res.status(200).json(updatedRestaurant);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Delete Restaurant function
+export const deleteRestaurant = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+
+    // Find the restaurant by ID
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    // Check if the restaurant exists
+    if (!restaurant) {
+      return res.status(404).json({ error: 'Restaurant not found' });
+    }
+
+    // Check if the logged-in user is the owner of the restaurant
+    if (restaurant.userID.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'You are not authorized to delete this restaurant' });
+    }
+
+    // Delete the restaurant
+    await restaurant.remove();
+    res.status(200).json({ message: 'Restaurant deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

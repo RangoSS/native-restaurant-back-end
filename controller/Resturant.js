@@ -103,11 +103,10 @@ export const updateRestaurant = async (req, res) => {
 export const deleteRestaurant = async (req, res) => {
   try {
     const { restaurantId } = req.params;
-     console.log('check resturantID' ,restaurantId);
+     
     // Find the restaurant by ID
     const restaurant = await Restaurant.findById(restaurantId);
-    console.log("restaurant", restaurant);
-    console.log("logged in user id", req.user.id);
+    
     // Check if the restaurant exists
     if (!restaurant) {
       return res.status(404).json({ error: 'Restaurant not found' });
@@ -117,8 +116,7 @@ export const deleteRestaurant = async (req, res) => {
     if (restaurant.userID.toString() !== req.user.id) {
       return res.status(403).json({ error: 'You are not authorized to update this restaurant' });
     }
-    console.log("restaurant 2", restaurant);
-    console.log("logged in user id 2", req.user.id);
+    
     // Delete the restaurant
      await restaurant.deleteOne()
   

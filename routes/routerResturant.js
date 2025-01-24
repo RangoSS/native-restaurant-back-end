@@ -1,5 +1,5 @@
 import express from 'express';
-//import { verifyToken } from '../middleware/authMiddleware.js'; 
+import { verifyToken } from '../middleware/authMiddleware.js'; 
 //import { checkRole } from '../middleware/roleMiddleware.js'; 
 // routers/userRoutes.js
 import { postUser,getAllUsers } from '../controller/User.js'; // Importing from your controller
@@ -15,7 +15,7 @@ const router = express.Router();
 router.post('/login', Login);
 // POST endpoint to add an employee
 router.post('/user', postUser);
-router.post('/restaurants',upload.single('image'), addRestaurant);
+router.post('/restaurants',verifyToken,upload.single('image'), addRestaurant);
 //router.post('/restaurant', verifyToken, checkRole(['post_user','post_recipe', 'delete_recipe', 'delete_user','update_recipe']), postRecipe);
 //router.get('/restaurant', verifyToken, checkRole(['post_user','post_recipe', 'delete_recipe', 'delete_user','update_recipe']), getRecipe);
 //router.put('/restaurant/:restId', verifyToken, checkRole(['post_user','post_recipe', 'delete_recipe', 'delete_user','update_recipe']), updateRecipe);

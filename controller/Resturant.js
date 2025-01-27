@@ -136,10 +136,24 @@ export const getAllRestaurants = async (req, res) => {
     if (!restaurants || restaurants.length === 0) {
       return res.status(404).json({ error: 'No restaurants found for this user' });
     }
-
+ 
+ 
     // Respond with the list of restaurants
     res.status(200).json(restaurants);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+//export const getAllRes = async (req, res) => {
+  //try {
+    // Retrieve all restaurants from the database
+    //const restaurants = await Restaurant.find();
+
+    // Respond with the list of restaurants
+    //res.status(200).json(restaurants);
+  //} catch (error) {
+    //res.status(500).json({ error: error.message });
+  //}
+//};
+

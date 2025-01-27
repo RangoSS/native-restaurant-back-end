@@ -19,6 +19,7 @@ router.delete('/restaurants/:restaurantId',verifyToken, deleteRestaurant);
 router.put('/user/:userId',verifyToken, updateUser);
 router.delete('/user/:userId',verifyToken, deleteUser);
 router.get('/restaurants',verifyToken, getAllRestaurants);
+//router.get('/restaurants', getAllRes);
 //router.post('/restaurant', verifyToken, checkRole(['post_user','post_recipe', 'delete_recipe', 'delete_user','update_recipe']), postRecipe);
 
 router.get('/user', getAllUsers);

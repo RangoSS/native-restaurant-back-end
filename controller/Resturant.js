@@ -145,15 +145,15 @@ export const getAllRestaurants = async (req, res) => {
   }
 };
 
-//export const getAllRes = async (req, res) => {
-  //try {
+export const getAllRes = async (req, res) => {
+  try {
     // Retrieve all restaurants from the database
-    //const restaurants = await Restaurant.find();
+    const restaurants = await Restaurant.find();
 
     // Respond with the list of restaurants
-    //res.status(200).json(restaurants);
-  //} catch (error) {
-    //res.status(500).json({ error: error.message });
-  //}
-//};
+    res.status(200).json(restaurants);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 

@@ -39,8 +39,12 @@ app.use((req, res, next) => {
   }
 });
 
-// Enable CORS for all routes
-app.use(cors());
+// Enable CORS for specific origins (including the front-end port)
+const corsOptions = {
+  origin: process.env.NODE_ENV === "development" ? "http://localhost:8081" : "*", // Allow http://localhost:8081 in development
+};
+
+app.use(cors(corsOptions));
 
 // Use Express built-in middleware for body parsing
 app.use(express.urlencoded({ extended: false })); // Middleware to parse incoming requests with url-encoded payloads

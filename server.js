@@ -9,7 +9,17 @@ dotenv.config();
 
 const app = express();
 
-// Define allowed IPs, including local IPs for development
+// CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === "development"
+    ? "http://localhost:8081"  // Allow localhost:8081 during development
+    : "*",  // Allow all origins in production, or you can specify your production URL
+};
+
+// Enable CORS for all routes
+app.use(cors(corsOptions));
+
+// Middleware to restrict access by IP (optional)
 const allowedIPs = [
   "127.0.0.1", // IPv4 localhost
   "::1",       // IPv6 localhost
@@ -18,10 +28,9 @@ const allowedIPs = [
   "34.211.200.85"
 ];
 
-// Middleware to restrict access by IP
+// Middleware to restrict access by IP (optional)
 app.use((req, res, next) => {
   if (process.env.NODE_ENV === "development") {
-    // Allow all requests in development mode
     console.log("Development mode: IP restriction disabled");
     return next();
   }
@@ -38,13 +47,6 @@ app.use((req, res, next) => {
     res.status(403).json({ error: "Access denied. Your IP is not allowed." });
   }
 });
-
-// Enable CORS for specific origins (including the front-end port)
-const corsOptions = {
-  origin: process.env.NODE_ENV === "development" ? "http://localhost:8081" : "*", // Allow http://localhost:8081 in development
-};
-
-app.use(cors(corsOptions));
 
 // Use Express built-in middleware for body parsing
 app.use(express.urlencoded({ extended: false })); // Middleware to parse incoming requests with url-encoded payloads

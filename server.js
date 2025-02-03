@@ -48,10 +48,9 @@ app.use((req, res, next) => {
   }
 });
 
-// Middleware to parse JSON and URL-encoded data
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
+// Middleware to parse JSON and URL-encoded data with increased limit
+app.use(express.json({ limit: '10mb' }));  // Increase the limit as needed
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // Connect to MongoDB
 connectDB();
 

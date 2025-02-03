@@ -9,39 +9,30 @@ dotenv.config();
 
 const app = express();
 
+const PORT = process.env.PORT || 3003;
+
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === "development"
     ? "http://localhost:8081"  // Allow localhost:8081 during development
-    : "*",  // Allow all origins in production, or you can specify your production URL
+    : "*",  // Allow all origins in production (customize this as needed)
 };
 
 // Enable CORS for all routes
 app.use(cors(corsOptions));
 
-// Middleware to restrict access by IP (optional)
-const allowedIPs = [
-  "127.0.0.1", // IPv4 localhost
-  "::1",       // IPv6 localhost
-  "35.160.120.126",
-  "44.233.151.27",
-  "34.211.200.85"
-];
-
-// Middleware to restrict access by IP (optional)
+// Middleware to restrict access by IP
 app.use((req, res, next) => {
   if (process.env.NODE_ENV === "development") {
     console.log("Development mode: IP restriction disabled");
     return next();
   }
 
-  const clientIP =
-    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
+  const clientIP = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   console.log("Detected IP:", clientIP); // Log the IP for debugging
 
-  // Check if the client IP is in the allowed list
-  if (allowedIPs.includes(clientIP)) {
+  // Only allow access from this specific IP
+  if (clientIP === "35.160.120.126") {
     next();
   } else {
     res.status(403).json({ error: "Access denied. Your IP is not allowed." });
@@ -49,18 +40,16 @@ app.use((req, res, next) => {
 });
 
 // Use Express built-in middleware for body parsing
-app.use(express.urlencoded({ extended: false })); // Middleware to parse incoming requests with url-encoded payloads
-app.use(express.json()); // Middleware to parse incoming JSON requests
+app.use(express.urlencoded({ extended: false })); // Parse URL-encoded requests
+app.use(express.json()); // Parse JSON requests
 
-const PORT = process.env.PORT || 3003;
-
-// Connect to MongoDB using Mongoose
+// Connect to MongoDB
 connectDB();
 
-// Use user routes for the API
+// Use restaurant routes
 app.use("/api", routerRestaurant);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });
